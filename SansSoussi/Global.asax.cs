@@ -26,12 +26,19 @@ namespace SansSoussi
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
+        }
 
+        protected void Application_PreSendRequestHeaders(object source, EventArgs e)
+        {
+            Response.Headers.Remove("Server");
+            Response.Headers.Remove("x-aspnet-version");
         }
 
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            MvcHandler.DisableMvcResponseHeader = true;
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
